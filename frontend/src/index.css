@@ -3,8 +3,154 @@
 @tailwind utilities;
 
 body {
+  margin: 0;
   background: #0f0f10;
   color: #fff;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.light-mode body {
+  background: #f4f5f7;
+  color: #202124;
+}
+
+.storefront-main {
+  min-height: calc(100vh - 116px);
+}
+
+.hero-catalog {
+  width: 100%;
+  padding: 18px max(16px, calc((100vw - 1280px) / 2)) 12px;
+}
+
+.catalog-showcase {
+  width: 100%;
+}
+
+.catalog-heading,
+.quick-picks-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.catalog-eyebrow {
+  margin: 0 0 5px;
+  color: #e11d73;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.catalog-heading h2,
+.quick-picks-heading h2 {
+  margin: 0;
+  font-size: clamp(20px, 2.5vw, 30px);
+}
+
+.catalog-see-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #f36b9f;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.catalog-slider {
+  margin: 18px -8px 30px;
+}
+
+.catalog-slider .slick-slide {
+  padding: 0 8px;
+}
+
+.promo-product-card {
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background: #19191c;
+}
+
+.promo-product-image {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: #25262a;
+}
+
+.promo-product-image img {
+  display: block;
+  width: 100%;
+  height: clamp(190px, 23vw, 285px);
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.promo-product-image:hover img { transform: scale(1.04); }
+
+.promo-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  border-radius: 999px;
+  background: #e11d73;
+  padding: 5px 9px;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.promo-product-info {
+  display: flex;
+  min-height: 112px;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+}
+
+.promo-brand { margin: 0 0 4px; color: #f36b9f; font-size: 11px; font-weight: 700; }
+.promo-product-info h3 { margin: 0; color: white; font-size: 16px; }
+.promo-rating { display: flex; align-items: center; gap: 5px; margin-top: 9px; color: rgba(255, 255, 255, 0.55); font-size: 11px; }
+.promo-rating svg { color: #f7c948; }
+.promo-purchase { display: flex; flex: 0 0 auto; flex-direction: column; align-items: flex-end; justify-content: space-between; }
+.promo-purchase strong { color: white; font-size: 18px; }
+.promo-purchase a { border-radius: 7px; background: #e11d73; padding: 7px 9px; color: white; font-size: 11px; font-weight: 700; }
+.quick-picks-heading { margin: 8px 0 12px; }
+.quick-picks-heading span { color: rgba(255, 255, 255, 0.5); font-size: 12px; }
+.quick-picks-row { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; }
+.quick-pick-card { display: grid; min-width: 190px; grid-template-columns: 58px 1fr; column-gap: 10px; align-items: center; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; background: #19191c; padding: 8px; }
+.quick-pick-card img { width: 58px; height: 58px; grid-row: span 2; border-radius: 7px; object-fit: cover; }
+.quick-pick-card span { overflow: hidden; color: white; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.quick-pick-card strong { color: #f36b9f; font-size: 12px; }
+.light-mode .promo-product-card, .light-mode .quick-pick-card { border-color: #e1e3e6; background: white; }
+.light-mode .promo-product-info h3, .light-mode .promo-purchase strong, .light-mode .quick-pick-card span { color: #202124; }
+.light-mode .promo-rating, .light-mode .quick-picks-heading span { color: #70757d; }
+
+.catalog-slider .slick-dots { bottom: -27px; }
+.catalog-slider .slick-dots li button::before { color: #e11d73; }
+.catalog-slider .slick-prev, .catalog-slider .slick-next { z-index: 2; }
+.catalog-slider .slick-prev { left: 17px; }
+.catalog-slider .slick-next { right: 17px; }
+
+.hero-carousel {
+  width: 100%;
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .hero-catalog {
+    padding-top: 10px;
+  }
+
+  .catalog-heading { align-items: start; }
+  .catalog-heading h2 { font-size: 22px; }
+  .catalog-see-all { margin-top: 12px; }
+  .promo-product-image img { height: 230px; }
+  .quick-picks-heading { align-items: start; flex-direction: column; gap: 3px; }
 }
 
 input,

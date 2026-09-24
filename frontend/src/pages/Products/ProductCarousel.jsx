@@ -1,108 +1,84 @@
+import { Link } from "react-router-dom";
 import { useGetTopProductsQuery } from "../../redux/api/productApiSlice";
 import Message from "../../components/Message";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import moment from "moment";
-import {
-  FaBox,
-  FaClock,
-  FaShoppingCart,
-  FaStar,
-  FaStore,
-} from "react-icons/fa";
+import { FaArrowRight, FaStar } from "react-icons/fa";
 
 const ProductCarousel = () => {
-  const { data: products, isLoading, error } = useGetTopProductsQuery();
+  const { data: products = [], isLoading, error } = useGetTopProductsQuery();
 
   const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
+    dots: true,
+    infinite: products.length > 3,
+    speed: 450,
+    slidesToShow: Math.min(products.length, 3),
     slidesToScroll: 1,
     arrows: true,
     autoplay: true,
-    autoplaySpeed: 3000,
+    autoplaySpeed: 3600,
+    responsive: [
+      { breakpoint: 900, settings: { slidesToShow: Math.min(products.length, 2) } },
+      { breakpoint: 640, settings: { slidesToShow: 1, arrows: false } },
+    ],
   };
 
+  if (isLoading) return null;
+  if (error) return <Message variant="danger">Unable to load featured products.</Message>;
+  if (!products.length) return <Message variant="info">New products are arriving soon.</Message>;
+
   return (
-    <div className="mb-4 lg:block xl:block md:block">
-      {isLoading ? null : error ? (
-        <Message variant="danger">
-          {error?.data?.message || error.error}
-        </Message>
-      ) : (
-        <Slider
-          {...settings}
-          className="xl:w-[50rem]  lg:w-[50rem] md:w-[56rem] sm:w-[40rem] sm:block"
-        >
-          {products.map(
-            ({
-              image,
-              _id,
-              name,
-              price,
-              description,
-              brand,
-              createdAt,
-              numReviews,
-              rating,
-              quantity,
-              countInStock,
-            }) => (
-              <div key={_id}>
-                <img
-                  src={image}
-                  alt={name}
-                  className="w-full rounded-lg object-cover h-[30rem]"
-                />
+    <div className="catalog-showcase">
+      <div className="catalog-heading">
+        <div>
+          <p className="catalog-eyebrow">ShopExpress picks</p>
+          <h2>Fresh finds, ready to ship</h2>
+        </div>
+        <Link to="/shop" className="catalog-see-all">
+          View all <FaArrowRight />
+        </Link>
+      </div>
 
-                <div className="mt-4 flex justify-between">
-                  <div className="one">
-                    <h2>{name}</h2>
-                    <p> $ {price}</p> <br /> <br />
-                    <p className="w-[25rem]">
-                      {description.substring(0, 170)} ...
-                    </p>
-                  </div>
-
-                  <div className="flex justify-between w-[20rem]">
-                    <div className="one">
-                      <h1 className="flex items-center mb-6">
-                        <FaStore className="mr-2 text-white" /> Brand: {brand}
-                      </h1>
-                      <h1 className="flex items-center mb-6">
-                        <FaClock className="mr-2 text-white" /> Added:{" "}
-                        {moment(createdAt).fromNow()}
-                      </h1>
-                      <h1 className="flex items-center mb-6">
-                        <FaStar className="mr-2 text-white" /> Reviews:
-                        {numReviews}
-                      </h1>
-                    </div>
-
-                    <div className="two">
-                      <h1 className="flex items-center mb-6">
-                        <FaStar className="mr-2 text-white" /> Ratings:{" "}
-                        {Math.round(rating)}
-                      </h1>
-                      <h1 className="flex items-center mb-6">
-                        <FaShoppingCart className="mr-2 text-white" /> Quantity:{" "}
-                        {quantity}
-                      </h1>
-                      <h1 className="flex items-center mb-6">
-                        <FaBox className="mr-2 text-white" /> In Stock:{" "}
-                        {countInStock}
-                      </h1>
-                    </div>
-                  </div>
+      <Slider {...settings} className="catalog-slider">
+        {products.map((product) => (
+          <article key={product._id} className="promo-product-card">
+            <Link to={`/product/${product._id}`} className="promo-product-image">
+              <img src={product.image} alt={product.name} />
+              <span className="promo-badge">Top rated</span>
+            </Link>
+            <div className="promo-product-info">
+              <div>
+                <p className="promo-brand">{product.brand}</p>
+                <h3>{product.name}</h3>
+                <div className="promo-rating">
+                  <FaStar /> {product.rating.toFixed(1)} · {product.numReviews} reviews
                 </div>
               </div>
-            )
-          )}
-        </Slider>
-      )}
+              <div className="promo-purchase">
+                <strong>${product.price}</strong>
+                <Link to={`/product/${product._id}`} aria-label={`Shop ${product.name}`}>
+                  Shop now
+                </Link>
+              </div>
+            </div>
+          </article>
+        ))}
+      </Slider>
+
+      <div className="quick-picks-heading">
+        <h2>Popular right now</h2>
+        <span>Simple picks for your next order</span>
+      </div>
+      <div className="quick-picks-row">
+        {products.map((product) => (
+          <Link key={`quick-${product._id}`} to={`/product/${product._id}`} className="quick-pick-card">
+            <img src={product.image} alt="" />
+            <span>{product.name}</span>
+            <strong>${product.price}</strong>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 };

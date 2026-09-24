@@ -123,7 +123,7 @@ const fetchAllProducts = asyncHandler(async (req, res) => {
     const products = await Product.find({})
       .populate("category")
       .limit(12)
-      .sort({ createAt: -1 });
+      .sort({ createdAt: -1 });
 
     res.json(products);
   } catch (error) {

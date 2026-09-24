@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -20,6 +20,8 @@ import HeartIcon from "./HeartIcon";
 import Ratings from "./Ratings";
 import ProductTabs from "./ProductTabs";
 import { addToCart } from "../../redux/features/cart/cartSlice";
+import { useTrackAiEventMutation } from "../../redux/api/aiApiSlice";
+import { getAiSessionId } from "../../Utils/aiSession";
 
 const ProductDetails = () => {
   const { id: productId } = useParams();
@@ -29,6 +31,7 @@ const ProductDetails = () => {
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+  const [trackAiEvent] = useTrackAiEventMutation();
 
   const {
     data: product,
@@ -38,6 +41,16 @@ const ProductDetails = () => {
   } = useGetProductDetailsQuery(productId);
 
   const { userInfo } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (productId) {
+      trackAiEvent({
+        sessionId: getAiSessionId(),
+        productId,
+        type: "view",
+      });
+    }
+  }, [productId, trackAiEvent]);
 
   const [createReview, { isLoading: loadingProductReview }] =
     useCreateReviewMutation();

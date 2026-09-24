@@ -1,16 +1,17 @@
 {
-  "name": "MERN e-commerce",
+  "name": "ShopExpress",
   "version": "1.0.0",
-  "description": "MERN Stack E-Commerce Project",
+  "description": "One Stop Shop For All Your Needs",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "backend": "nodemon backend/index.js",
     "frontend": "npm run dev --prefix frontend",
-    "dev": "concurrently \"npm run frontend\" \"npm run backend"
+    "dev": "concurrently \"npm run frontend\" \"npm run backend\"",
+    "seed": "node backend/utils/seedProducts.js"
   },
   "keywords": [],
-  "author": "HuXn WebDev",
+  "author": "Himanshu Verma",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
