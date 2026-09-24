@@ -1,2 +1,7 @@
 /node_modules
 .env
+
+# Frontend build output and local tooling
+frontend/dist
+*.local
+.DS_Store
